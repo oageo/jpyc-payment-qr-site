@@ -1,0 +1,21 @@
+{
+	"type": "module",
+	"scripts": {
+		"build": "eleventy",
+		"serve": "eleventy --serve",
+		"start": "eleventy --serve",
+		"lint": "biome check src/js/ eleventy.config.js && prettier --check src/js/ eleventy.config.js",
+		"lint:fix": "biome check --write src/js/ eleventy.config.js && prettier --write src/js/ eleventy.config.js"
+	},
+	"dependencies": {
+		"@11ty/eleventy": "^3.1.2",
+		"bulma": "^1.0.4",
+		"eleventy-plugin-purgecss": "^0.6.0",
+		"esbuild": "^0.27.3",
+		"jpyc-payment-qr": "^1.0.0"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "^2.4.4",
+		"prettier": "^3.8.1"
+	}
+}

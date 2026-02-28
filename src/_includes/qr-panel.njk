@@ -1,0 +1,17 @@
+<div id="warning-container"></div>
+
+<div class="box has-text-centered">
+  <p class="has-text-grey" id="qr-placeholder">アドレスと金額を入力してください</p>
+  <figure class="image is-inline-block" id="qr-figure" style="display:none">
+    <img id="qr-image" src="" alt="QRコード" style="width:256px;height:256px">
+  </figure>
+  <details id="uri-display" class="has-text-left mt-3" style="display:none">
+    <summary class="has-text-grey is-size-7">EIP-681 URI</summary>
+    <div class="notification is-info is-light mt-2">
+      <div class="is-flex is-align-items-center" style="gap:0.5rem">
+        <code id="uri-text" style="flex:1;word-break:break-all"></code>
+        <button class="button is-small" id="copy-button" type="button">コピー</button>
+      </div>
+    </div>
+  </details>
+</div>
