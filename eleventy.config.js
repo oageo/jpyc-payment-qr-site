@@ -1,13 +1,20 @@
 import pluginPurgeCSS from "eleventy-plugin-purgecss";
 import esbuild from "esbuild";
+import { readFileSync } from "fs";
+
+const { version: jpycPaymentQrVersion } = JSON.parse(
+	readFileSync("./node_modules/jpyc-payment-qr/package.json", "utf-8"),
+);
 
 export default function (eleventyConfig) {
+	eleventyConfig.addGlobalData("jpycPaymentQrVersion", jpycPaymentQrVersion);
 	// purgecss 8.x + Windows環境ではファイルパス指定がfile://URL問題を起こすため
 	// オブジェクト形式で直接渡す（purgecss.config.cjs は設定内容の参考用として保持）
 	eleventyConfig.addPlugin(pluginPurgeCSS, {
 		config: {
 			content: ["./_site/**/*.html"],
 			css: ["./_site/**/*.css"],
+			safelist: ["is-inline-block"],
 		},
 	});
 	eleventyConfig.addPassthroughCopy({
