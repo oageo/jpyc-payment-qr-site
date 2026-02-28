@@ -9,14 +9,16 @@ const warningContainer = document.getElementById("warning-container");
 export function showPlaceholder(message) {
 	qrPlaceholder.textContent = message;
 	qrPlaceholder.style.display = "";
+	qrFigure.classList.remove("is-inline-block");
 	qrFigure.style.display = "none";
-	qrImage.src = "";
+	qrImage.removeAttribute("src");
 }
 
 export function showQR(dataUrl) {
 	qrPlaceholder.style.display = "none";
 	qrImage.src = dataUrl;
-	qrFigure.style.display = "";
+	qrFigure.style.removeProperty("display");
+	qrFigure.classList.add("is-inline-block");
 }
 
 export function showURI(uri) {

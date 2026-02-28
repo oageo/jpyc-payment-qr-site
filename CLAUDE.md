@@ -81,5 +81,13 @@ eleventyConfig.addPlugin(pluginPurgeCSS, {
 
 `purgecss.config.cjs` は参照用として残しているが、実際には読み込まれない。
 
+### PurgeCSS と動的クラスの safelist
+JS で動的に付与する Bulma クラスは静的 HTML に存在しないため、PurgeCSS に除去される。
+`eleventy.config.js` の `safelist` に明示的に列挙して保護する。
+
+```js
+safelist: ["is-inline-block"],
+```
+
 ### esbuild pnpm ビルドスクリプト警告
 pnpm は esbuild の postinstall スクリプトを無視する警告が出るが、バイナリは正常に動作する。
