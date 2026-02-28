@@ -1,0 +1,23 @@
+---
+layout: base.njk
+title: JPYC支払いQRコード生成ツール
+---
+
+<section class="section">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-half">
+
+        <h1 class="title">JPYC支払いQRコード（EIP-681）生成ツール</h1>
+        <p class="subtitle">受取アドレスと金額、ネットワークを入力してQRコードを生成します</p>
+
+        {% include "qr-panel.njk" %}
+
+        {% include "payment-form.njk" %}
+
+      </div>
+    </div>
+  </div>
+</section>
+
+{% include "sitefooter.njk" %}
