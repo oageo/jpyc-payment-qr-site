@@ -21,8 +21,8 @@ importers:
         specifier: ^0.27.3
         version: 0.27.3
       jpyc-payment-qr:
-        specifier: ^1.0.0
-        version: 1.0.0
+        specifier: ^1.0.2
+        version: 1.0.2
     devDependencies:
       '@biomejs/biome':
         specifier: ^2.4.4
@@ -631,8 +631,8 @@ packages:
     resolution: {integrity: sha512-gXkz5+KN7HrG0Q5UGqSMO2qB9AsbEeyLP54kF1YrMsIxmu+g4BdB7rflReZTSTZGpfj8wywu6pfPBCylPIzGQA==}
     engines: {node: '>=6.0'}
 
-  jpyc-payment-qr@1.0.0:
-    resolution: {integrity: sha512-JVcu6c+jMnCPdAE20BqgzL97Iu/4vQDwjrvxWiWEwKrYTLrxWZ+uC7f2RgBPCXZX0q6vocVMIuGlR1KxlendCA==}
+  jpyc-payment-qr@1.0.2:
+    resolution: {integrity: sha512-rDFneDaFq+tlr0er6aCr4wXejG8v92CyOjKLnFM7FVgks96EgGWo9w/1Wcf1wvMNDpxyTOc4jP5edzkA7BNCpQ==}
     engines: {node: '>=18.0.0'}
 
   js-yaml@3.14.2:
@@ -1523,7 +1523,7 @@ snapshots:
 
   iso-639-1@3.1.5: {}
 
-  jpyc-payment-qr@1.0.0:
+  jpyc-payment-qr@1.0.2:
     dependencies:
       '@noble/hashes': 1.8.0
       qrcode: 1.5.4
