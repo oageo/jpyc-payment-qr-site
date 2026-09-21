@@ -67,6 +67,16 @@ const uri = encodeEIP681(jpycAddress, merchantAddress, jpyToWei(amount), testnet
 
 テストネット chainId: Polygon Amoy=80002, Ethereum Sepolia=11155111, Avalanche Fuji=43113
 
+## QR モード
+
+- **EIP-681 モード**（デフォルト）: EIP-681 URI を QR 化する。
+- **受取アドレスのみモード**（`#address-only-toggle`）: EIP-681 非対応ウォレット向け。
+  `generateQRFromURI(toChecksumAddress(merchantAddress))` でチェックサム付きアドレスだけを QR 化する
+  （`generateQRFromURI` は URI 形式を検証しないため任意の文字列を渡せる）。
+  金額は任意入力で QR には含まれず、ネットワーク・金額は QR 下の注意書きとして表示する。
+
+モード切り替えはページ遷移なしで `updateQR()` を再実行するだけ。
+
 ## 既知の問題・回避策
 
 ### PurgeCSS + Windows の file:// URL 問題
@@ -86,7 +96,7 @@ JS で動的に付与する Bulma クラスは静的 HTML に存在しないた�
 `eleventy.config.js` の `safelist` に明示的に列挙して保護する。
 
 ```js
-safelist: ["is-inline-block"],
+safelist: ["is-inline-block", "message", "message-body", "is-warning"],
 ```
 
 ### esbuild pnpm ビルドスクリプト警告

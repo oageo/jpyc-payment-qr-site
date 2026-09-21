@@ -15,7 +15,7 @@
 		"jpyc-payment-qr": "^1.1.0"
 	},
 	"devDependencies": {
-		"@biomejs/biome": "^2.5.3",
-		"prettier": "^3.9.5"
+		"@biomejs/biome": "^2.5.14",
+		"prettier": "^3.9.8"
 	}
 }

@@ -14,7 +14,7 @@ export default function (eleventyConfig) {
 		config: {
 			content: ["./_site/**/*.html"],
 			css: ["./_site/**/*.css"],
-			safelist: ["is-inline-block"],
+			safelist: ["is-inline-block", "message", "message-body", "is-warning"],
 		},
 	});
 	eleventyConfig.addPassthroughCopy({

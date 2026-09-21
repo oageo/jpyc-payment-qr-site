@@ -4,6 +4,8 @@ const networkSelect = document.getElementById("network");
 const merchantAddressError = document.getElementById("merchantAddress-error");
 const amountError = document.getElementById("amount-error");
 const testnetToggle = document.getElementById("testnet-toggle");
+const addressOnlyToggle = document.getElementById("address-only-toggle");
+const amountOptionalHint = document.getElementById("amount-optional-hint");
 
 const MAINNET_NETWORKS = [
 	{ value: "polygon", label: "Polygon" },
@@ -40,6 +42,8 @@ export function getValues() {
 		merchantAddress: merchantAddressInput.value.trim(),
 		amountRaw: amountInput.value,
 		network,
+		networkLabel: networkSelect.selectedOptions[0]?.textContent ?? network,
+		addressOnly: addressOnlyToggle.checked,
 		mainnetNetwork: testnet && testnetConfig ? testnetConfig.mainnet : network,
 		testnet,
 		testnetChainId: testnet && testnetConfig ? testnetConfig.chainId : null,
@@ -104,6 +108,18 @@ export function initTestnetToggle(callback) {
 			if (equiv) networkSelect.value = equiv.mainnet;
 		}
 
+		callback();
+	});
+}
+
+export function initAddressOnlyToggle(callback) {
+	const syncHint = () => {
+		amountOptionalHint.style.display = addressOnlyToggle.checked ? "" : "none";
+	};
+	// リロード時にブラウザがチェック状態を復元する場合に備える
+	syncHint();
+	addressOnlyToggle.addEventListener("change", () => {
+		syncHint();
 		callback();
 	});
 }
