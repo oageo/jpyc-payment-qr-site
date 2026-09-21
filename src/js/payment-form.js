@@ -11,6 +11,7 @@ const MAINNET_NETWORKS = [
 	{ value: "polygon", label: "Polygon" },
 	{ value: "ethereum", label: "Ethereum" },
 	{ value: "avalanche", label: "Avalanche" },
+	{ value: "kaia", label: "Kaia" },
 ];
 
 const TESTNET_NETWORKS = [
@@ -31,6 +32,12 @@ const TESTNET_NETWORKS = [
 		label: "Avalanche Fuji",
 		chainId: 43113,
 		mainnet: "avalanche",
+	},
+	{
+		value: "kaia-kairos",
+		label: "Kaia Kairos",
+		chainId: 1001,
+		mainnet: "kaia",
 	},
 ];
 

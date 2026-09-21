@@ -65,7 +65,9 @@ const jpycAddress = CHAIN_CONFIGS[mainnetNetwork].jpycAddress;
 const uri = encodeEIP681(jpycAddress, merchantAddress, jpyToWei(amount), testnetChainId);
 ```
 
-テストネット chainId: Polygon Amoy=80002, Ethereum Sepolia=11155111, Avalanche Fuji=43113
+対応ネットワーク（v1.2.0〜）: polygon, ethereum, avalanche, kaia
+
+テストネット chainId: Polygon Amoy=80002, Ethereum Sepolia=11155111, Avalanche Fuji=43113, Kaia Kairos=1001
 
 ## QR モード
 
