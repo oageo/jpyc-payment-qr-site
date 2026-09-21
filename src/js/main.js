@@ -5,16 +5,36 @@ import {
 	generateQRFromURI,
 	JPYCPaymentError,
 	jpyToWei,
+	toChecksumAddress,
 	validateGenerateOptions,
 } from "jpyc-payment-qr";
 import * as form from "./payment-form.js";
 import * as qrPanel from "./qr-panel.js";
+
+async function renderQR(generate, uriLabel) {
+	try {
+		const qr = await generate();
+		qrPanel.showQR(qr.data);
+		qrPanel.showURI(qr.uri, uriLabel);
+		return true;
+	} catch (err) {
+		qrPanel.showPlaceholder(
+			err instanceof JPYCPaymentError
+				? `エラー: ${err.message}`
+				: "QRコードの生成に失敗しました",
+		);
+		qrPanel.hideURI();
+		return false;
+	}
+}
 
 async function updateQR() {
 	const {
 		merchantAddress,
 		amountRaw,
 		network,
+		networkLabel,
+		addressOnly,
 		mainnetNetwork,
 		testnet,
 		testnetChainId,
@@ -22,9 +42,14 @@ async function updateQR() {
 
 	form.clearErrors();
 	qrPanel.showWarnings([]);
+	qrPanel.hideAddressOnlyNote();
 
-	if (!merchantAddress && !amountRaw) {
-		qrPanel.showPlaceholder("アドレスと金額を入力してください");
+	if (!merchantAddress && (addressOnly || !amountRaw)) {
+		qrPanel.showPlaceholder(
+			addressOnly
+				? "アドレスを入力してください"
+				: "アドレスと金額を入力してください",
+		);
 		qrPanel.hideURI();
 		return;
 	}
@@ -37,9 +62,15 @@ async function updateQR() {
 		network: mainnetNetwork,
 	});
 
+	// アドレスのみモードでは金額は任意（未入力エラーを無視する）
+	const errors =
+		addressOnly && amountRaw === ""
+			? validation.errors.filter((errMsg) => !errMsg.includes("amount"))
+			: validation.errors;
+
 	// Map validation errors to specific fields
-	if (!validation.valid) {
-		for (const errMsg of validation.errors) {
+	if (errors.length > 0) {
+		for (const errMsg of errors) {
 			if (errMsg.includes("merchantAddress") || errMsg.includes("アドレス")) {
 				form.showAddressError(errMsg);
 			} else if (errMsg.includes("amount") || errMsg.includes("金額")) {
@@ -53,8 +84,18 @@ async function updateQR() {
 
 	qrPanel.showWarnings(validation.warnings);
 
+	if (addressOnly) {
+		// EIP-681 非対応ウォレット向け: チェックサム付きアドレスのみを QR 化する
+		const ok = await renderQR(
+			() => generateQRFromURI(toChecksumAddress(merchantAddress)),
+			"QRコードの内容（受取アドレス）",
+		);
+		if (ok) qrPanel.showAddressOnlyNote(networkLabel, amountRaw);
+		return;
+	}
+
 	if (testnet) {
-		try {
+		await renderQR(() => {
 			const jpycAddress = CHAIN_CONFIGS[mainnetNetwork].jpycAddress;
 			const uri = encodeEIP681(
 				jpycAddress,
@@ -62,35 +103,16 @@ async function updateQR() {
 				jpyToWei(amount),
 				testnetChainId,
 			);
-			const qr = await generateQRFromURI(uri);
-			qrPanel.showQR(qr.data);
-			qrPanel.showURI(uri);
-		} catch (err) {
-			qrPanel.showPlaceholder(
-				err instanceof JPYCPaymentError
-					? `エラー: ${err.message}`
-					: "QRコードの生成に失敗しました",
-			);
-			qrPanel.hideURI();
-		}
+			return generateQRFromURI(uri);
+		});
 		return;
 	}
 
-	try {
-		const qr = await generatePaymentQR({ merchantAddress, amount, network });
-		qrPanel.showQR(qr.data);
-		qrPanel.showURI(qr.uri);
-	} catch (err) {
-		qrPanel.showPlaceholder(
-			err instanceof JPYCPaymentError
-				? `エラー: ${err.message}`
-				: "QRコードの生成に失敗しました",
-		);
-		qrPanel.hideURI();
-	}
+	await renderQR(() => generatePaymentQR({ merchantAddress, amount, network }));
 }
 
 form.onInput(updateQR);
 form.initAddressLock();
 form.initTestnetToggle(updateQR);
+form.initAddressOnlyToggle(updateQR);
 qrPanel.initCopyButton();

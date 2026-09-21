@@ -2,7 +2,18 @@ const qrPlaceholder = document.getElementById("qr-placeholder");
 const qrFigure = document.getElementById("qr-figure");
 const qrImage = document.getElementById("qr-image");
 const uriDisplay = document.getElementById("uri-display");
+const uriLabel = document.getElementById("uri-label");
 const uriText = document.getElementById("uri-text");
+const addressOnlyNote = document.getElementById("address-only-note");
+const addressOnlyNoteNetwork = document.getElementById(
+	"address-only-note-network",
+);
+const addressOnlyNoteAmountRow = document.getElementById(
+	"address-only-note-amount-row",
+);
+const addressOnlyNoteAmount = document.getElementById(
+	"address-only-note-amount",
+);
 const copyButton = document.getElementById("copy-button");
 const warningContainer = document.getElementById("warning-container");
 
@@ -21,9 +32,21 @@ export function showQR(dataUrl) {
 	qrFigure.classList.add("is-inline-block");
 }
 
-export function showURI(uri) {
+export function showURI(uri, label = "EIP-681 URI") {
+	uriLabel.textContent = label;
 	uriText.textContent = uri;
 	uriDisplay.style.display = "";
+}
+
+export function showAddressOnlyNote(networkLabel, amountRaw) {
+	addressOnlyNoteNetwork.textContent = networkLabel;
+	addressOnlyNoteAmount.textContent = amountRaw;
+	addressOnlyNoteAmountRow.style.display = amountRaw === "" ? "none" : "";
+	addressOnlyNote.style.display = "";
+}
+
+export function hideAddressOnlyNote() {
+	addressOnlyNote.style.display = "none";
 }
 
 export function hideURI() {

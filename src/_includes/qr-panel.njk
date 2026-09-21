@@ -5,8 +5,16 @@
   <figure class="image" id="qr-figure" style="display:none">
     <img id="qr-image" alt="QRコード" style="width:256px;height:256px">
   </figure>
+  <div class="notification is-info is-light has-text-left is-size-7 mt-3" id="address-only-note" style="display:none">
+    <p>このQRコードには受取アドレスのみが含まれます。支払者はウォレットで以下を指定してください。</p>
+    <ul>
+      <li>トークン: <strong>JPYC</strong></li>
+      <li>ネットワーク: <strong id="address-only-note-network"></strong></li>
+      <li id="address-only-note-amount-row">金額: <strong id="address-only-note-amount"></strong> JPYC</li>
+    </ul>
+  </div>
   <details id="uri-display" class="has-text-left mt-3" style="display:none">
-    <summary class="has-text-grey is-size-7">EIP-681 URI</summary>
+    <summary class="has-text-grey is-size-7" id="uri-label">EIP-681 URI</summary>
     <div class="notification is-info is-light mt-2">
       <div class="is-flex is-align-items-center" style="gap:0.5rem">
         <code id="uri-text" style="flex:1;word-break:break-all"></code>
