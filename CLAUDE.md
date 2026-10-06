@@ -73,8 +73,10 @@ const uri = encodeEIP681(jpycAddress, merchantAddress, jpyToWei(amount), testnet
 
 - **EIP-681 モード**（デフォルト）: EIP-681 URI を QR 化する。
 - **受取アドレスのみモード**（`#address-only-toggle`）: EIP-681 非対応ウォレット向け。
-  `generateQRFromURI(toChecksumAddress(merchantAddress))` でチェックサム付きアドレスだけを QR 化する
-  （`generateQRFromURI` は URI 形式を検証しないため任意の文字列を渡せる）。
+  `normalizeAddress(merchantAddress)` でチェックサム付きにしたアドレスだけを `qrcode` で直接 QR 化する
+  （v2 の `generateQRFromURI` は EIP-681 URI 以外を拒否するため使えない。`qrcode` は直接依存に追加済み）。
+  アドレスの安全検査（形式・チェックサム不一致・ゼロアドレス・JPYC コントラクトアドレス）は
+  QR 生成前に呼ぶ `validateGenerateOptions` が EIP-681 モードと共通で行う。
   金額は任意入力で QR には含まれず、ネットワーク・金額は QR 下の注意書きとして表示する。
 
 モード切り替えはページ遷移なしで `updateQR()` を再実行するだけ。

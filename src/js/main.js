@@ -5,9 +5,10 @@ import {
 	generateQRFromURI,
 	JPYCPaymentError,
 	jpyToWei,
-	toChecksumAddress,
+	normalizeAddress,
 	validateGenerateOptions,
 } from "jpyc-payment-qr";
+import QRCode from "qrcode";
 import * as form from "./payment-form.js";
 import * as qrPanel from "./qr-panel.js";
 
@@ -63,10 +64,11 @@ async function updateQR() {
 	});
 
 	// アドレスのみモードでは金額は任意（未入力エラーを無視する）
-	const errors =
-		addressOnly && amountRaw === ""
-			? validation.errors.filter((errMsg) => !errMsg.includes("amount"))
-			: validation.errors;
+	const errors = validation.issues
+		.filter(
+			(issue) => !(addressOnly && amountRaw === "" && issue.field === "amount"),
+		)
+		.map((issue) => issue.message);
 
 	// Map validation errors to specific fields
 	if (errors.length > 0) {
@@ -85,11 +87,18 @@ async function updateQR() {
 	qrPanel.showWarnings(validation.warnings);
 
 	if (addressOnly) {
-		// EIP-681 非対応ウォレット向け: チェックサム付きアドレスのみを QR 化する
-		const ok = await renderQR(
-			() => generateQRFromURI(toChecksumAddress(merchantAddress)),
-			"QRコードの内容（受取アドレス）",
-		);
+		// EIP-681 非対応ウォレット向け: チェックサム付きアドレスのみを QR 化する。
+		// v2 の generateQRFromURI は EIP-681 URI しか受け付けないため qrcode を直接使う。
+		// ゼロアドレス・コントラクトアドレス・チェックサム不一致は上の validateGenerateOptions で検出済み
+		const ok = await renderQR(async () => {
+			const address = normalizeAddress(merchantAddress);
+			const data = await QRCode.toDataURL(address, {
+				errorCorrectionLevel: "M",
+				width: 300,
+				margin: 4,
+			});
+			return { data, uri: address };
+		}, "QRコードの内容（受取アドレス）");
 		if (ok) qrPanel.showAddressOnlyNote(networkLabel, amountRaw);
 		return;
 	}
