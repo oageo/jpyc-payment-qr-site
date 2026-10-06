@@ -12,10 +12,11 @@
 		"bulma": "^1.0.4",
 		"eleventy-plugin-purgecss": "^0.6.0",
 		"esbuild": "^0.27.7",
-		"jpyc-payment-qr": "^1.2.0"
+		"jpyc-payment-qr": "^2.0.0",
+		"qrcode": "^1.5.4"
 	},
 	"devDependencies": {
-		"@biomejs/biome": "^2.5.14",
-		"prettier": "^3.9.8"
+		"@biomejs/biome": "^2.5.15",
+		"prettier": "^3.9.9"
 	}
 }
